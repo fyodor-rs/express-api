@@ -6,37 +6,40 @@ let post = new Schema({
         type: ObjectId,
         ref: 'user'
     },
-    comments: {
+    commentId: {
         type: ObjectId,
         ref: 'comment'
     },
-    img:{
+    img: {
         type: String,
-        default:''
+        default: 'https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png'
     },
-    title: { 
+    title: {
         type: String
     },
-    text: { 
+    content: {
         type: String
     },
-    createTime: { 
+    desc: {
         type: String
     },
-    desc: { 
+    likes: {
         type: String
     },
-    likes: { 
+    views: {
         type: String
     },
-    views: { 
+    label: {
         type: String
     },
-    label: { 
+    category: {
         type: String
     },
-    category: { 
-        type: String
+    createTime: {
+        type: Date
+    },
+    updateTime: {
+        type: Date
     },
 })
 module.exports = mongoose.model('post', post)

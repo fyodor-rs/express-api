@@ -9,12 +9,17 @@ const jwt = require('jsonwebtoken');
 const ApiResult = require('../untils/ApiResult');
 
 
-userRouter.get('/currentUser',(req, res)=>{
+userRouter.get('/currentUser', (req, res) => {
     User.findOne({
-        nickname:req.query.nickname,
-        // password:utility.md5('asd')
-    }).then((data)=>{
-        res.send(data);
+        nickname: req.query.nickname,
+    }).select('nickname phone email avatar').then((data) => {
+        res.send(ApiResult("响应成功！", true, data));
+    })
+})
+
+userRouter.get('/users', (req, res) => {
+    User.find().select('nickname phone email avatar').then((data) => {
+        res.send(ApiResult("响应成功！", true, data));
     })
 })
 
@@ -53,7 +58,7 @@ userRouter.post('/register', (req, res) => {
             }
             new User(body).save()
                 .then(
-                    sucess => res.send(ApiResult("注册成功！", true, sucess)),
+                    success => res.send(ApiResult("注册成功！", true, success)),
                     error => res.send(ApiResult("注册失败，请稍后重试！", false, error))
                 )
         })
