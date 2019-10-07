@@ -2,13 +2,10 @@ let mongoose = require('mongoose');
 let Schema = mongoose.Schema;
 let ObjectId = Schema.Types.ObjectId
 let post = new Schema({
-    userId: {
+    user: {
         type: ObjectId,
+        required:true,
         ref: 'user'
-    },
-    commentId: {
-        type: ObjectId,
-        ref: 'comment'
     },
     img: {
         type: String,
@@ -17,10 +14,13 @@ let post = new Schema({
     title: {
         type: String
     },
-    content: {
+    rawContent: {
         type: String
     },
-    desc: {
+    htmlContent:{
+        type: String
+    },
+    describe: {
         type: String
     },
     likes: {
@@ -30,16 +30,17 @@ let post = new Schema({
         type: String
     },
     label: {
-        type: String
+        type: Array
     },
     category: {
         type: String
     },
     createTime: {
-        type: Date
+        type: Date,
+        default:Date.now
     },
     updateTime: {
-        type: Date
+        type: Date,
     },
 })
 module.exports = mongoose.model('post', post)

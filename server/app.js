@@ -15,5 +15,5 @@ const {
 } = require('../router/index');
 app.use(indexRouter);
 app.use( userRouter);
-app.use( postRouter)
+app.use('/post',postRouter)
 app.listen(3333, () => console.log('监听成功！3333'));

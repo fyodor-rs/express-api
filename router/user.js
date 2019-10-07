@@ -10,6 +10,9 @@ const ApiResult = require('../untils/ApiResult');
 
 
 userRouter.get('/currentUser', (req, res) => {
+    if (!req.query.nickname) {
+        res.error(ApiResult("登录超时!", false, null,401));
+    }
     User.findOne({
         nickname: req.query.nickname,
     }).select('nickname phone email avatar').then((data) => {
