@@ -158,7 +158,7 @@ userRouter.post('/user/delete', (req, res) => {
            res.send(new Error('操作失败！', error))
            return
         }
-        return User.remove(req.body)
+        return User.deleteOne(req.body)
     }).then(
         success => res.send(new Success("删除成功！", success)),
         error => res.send(new Fail("删除失败！", error))
