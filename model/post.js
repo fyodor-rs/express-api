@@ -9,7 +9,7 @@ let post = new Schema({
     },
     img: {
         type: String,
-        default: 'https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png'
+        default: 'https://www.bing.com/th?id=OHR.ClavijoLandscape_ZH-CN1525245124_320x240.jpg&rf=LaDigue_1920x1080.jpg&pid=hp'
     },
     title: {
         type: String

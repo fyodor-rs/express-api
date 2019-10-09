@@ -26,10 +26,10 @@ let User = mongoose.model('user', new Schema({
         required: true,
         trim: true
     },
-    name: {
+    role: {
         type: String,
         trim: true,
-        default: 'admin'
+        default: 'user'
     },
     avatar: {
         type: String,
