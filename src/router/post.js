@@ -1,9 +1,24 @@
 const express = require('express');
 const postRouter = express.Router();
+const {upload,myHost} = require('../untils/fileUtils');
 const {
     Post
 } = require('../model/schema');
-const {Success,Fail} = require('../untils/ApiResult');
+const {
+    Success,
+    Fail
+} = require('../untils/ApiResult');
+
+
+postRouter.post('/file', upload.array('file', 1), (req, res) => {
+    var files = req.files;
+    Object.assign(files[0],{url:myHost+files[0].filename})
+    if (!files[0]) {
+       res.end(new Fail("上传失败！", null));
+    } else {
+        res.end(JSON.stringify(new Success("上传成功！", files[0])))
+    }
+})
 
 postRouter.get('/list', (req, res) => {
     Post.find().populate('user').then(

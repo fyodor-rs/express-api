@@ -5,9 +5,13 @@ const bodyParser = require('body-parser');
 // const cookieParser = require('cookie-parser');
 // app.use(cookieParser());
 app.use(bodyParser.urlencoded({
+    limit: '50000kb',
     extended: false
 }));
-app.use(bodyParser.json());
+app.use(bodyParser.json({limit: '50000kb'}));
+
+app.use(express.static('public'))
+
 const {
     indexRouter,
     userRouter,
