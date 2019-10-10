@@ -1,6 +1,6 @@
 const express = require('express');
 const indexRouter = express.Router();
-const BingWallpaper = require('../server/BingWallpaper');
+const BingWallpaper = require('./bingWallpaper');
 const jwtAuth = require('../untils/jwtAuth');
 //允许跨域
 indexRouter.all('*', function (req, res, next) {
@@ -29,8 +29,10 @@ indexRouter.get('/wallpapper', (req, res, next) => {
 //导出路由
 const userRouter = require('./user');
 const postRouter = require('./post');
+const tagRouter = require('./tag');
 module.exports = {
     indexRouter,
     userRouter,
-    postRouter
+    postRouter,
+    tagRouter
 };

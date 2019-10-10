@@ -4,7 +4,7 @@ let ObjectId = Schema.Types.ObjectId
 let post = new Schema({
     user: {
         type: ObjectId,
-        required:true,
+        required: true,
         ref: 'user'
     },
     img: {
@@ -17,7 +17,7 @@ let post = new Schema({
     rawContent: {
         type: String
     },
-    htmlContent:{
+    htmlContent: {
         type: String
     },
     describe: {
@@ -29,15 +29,16 @@ let post = new Schema({
     views: {
         type: String
     },
-    label: {
-        type: Array
-    },
+    tags: [{
+        type: ObjectId,
+        ref: 'tag'
+    }],
     category: {
         type: String
     },
     createTime: {
         type: Date,
-        default:Date.now
+        default: Date.now
     },
     updateTime: {
         type: Date,

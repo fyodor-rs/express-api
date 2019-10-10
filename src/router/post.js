@@ -1,27 +1,32 @@
 const express = require('express');
 const postRouter = express.Router();
-const {upload,myHost} = require('../untils/fileUtils');
 const {
-    Post
+    upload,
+    myHost
+} = require('../untils/fileUtils');
+const {
+    Post,
+    Tag
 } = require('../model/schema');
 const {
     Success,
     Fail
 } = require('../untils/ApiResult');
 
-
 postRouter.post('/file', upload.array('file', 1), (req, res) => {
     var files = req.files;
-    Object.assign(files[0],{url:myHost+files[0].filename})
+    Object.assign(files[0], {
+        url: myHost + files[0].filename
+    })
     if (!files[0]) {
-       res.end(new Fail("上传失败！", null));
+        res.end(new Fail("上传失败！", null));
     } else {
         res.end(JSON.stringify(new Success("上传成功！", files[0])))
     }
 })
 
 postRouter.get('/list', (req, res) => {
-    Post.find().populate('user').then(
+    Post.find().populate('tags').populate('user').then(
         success => res.send(new Success("响应成功！", success)),
         error => res.send(new Fail("响应失败！", error))
     )
@@ -56,10 +61,24 @@ postRouter.get('/:id', (req, res) => {
     )
 });
 postRouter.post('/add', (req, res) => {
-    new Post(req.body).save().then(
-        success => res.send(new Success("发布成功！", success)),
-        error => res.send(new Fail("发布失败！", error))
-    )
+     (async (tags)=> {
+         var tagList =[];
+        for (let i=0;i<tags.length;i++) {
+             const findItem= await Tag.findOne({'name':tags[i]})
+             if(!findItem){
+              const saveItem=  await new Tag({'name':tags[i]}).save()
+              tagList.push(saveItem);
+             }else{
+              tagList.push(findItem);
+             }
+             if(i==tags.length-1){
+                req.body.tags=tagList
+                const saveItem= await new Post(req.body).save()
+                return  res.send(new Success("发布成功！", saveItem))
+             }
+        }
+
+    })(req.body.tags)
 });
 postRouter.post('/edit', (req, res) => {
 
