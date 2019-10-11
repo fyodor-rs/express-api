@@ -3,6 +3,6 @@ const constant = require('./constant');
 const jwtAuth = expressJwt({
     secret: constant.secretKey
 }).unless({
-    path: ["/login", '/register']
+    path: ["/login", '/register','/post/list']
 });
 module.exports = jwtAuth;
