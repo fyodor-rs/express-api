@@ -124,7 +124,7 @@ userRouter.post('/login', (req, res) => {
         data => {
             if (data) {
                 var token = jwt.sign(data.toJSON(), constant.secretKey, {
-                    expiresIn: 60 * 60 // 授权时效1小时
+                    expiresIn: 60 * 60 * 6 // 授权时效6小时
                 })
                 res.send(Object.assign(new Success('登录成功！', data), {
                     token: token,
