@@ -26,7 +26,8 @@ postRouter.post('/file', upload.array('file', 1), (req, res) => {
 })
 
 postRouter.get('/list', (req, res) => {
-    Post.find().populate('tags').populate('user').then(
+    const request=Object.keys(req.query)!=0?Post.find(req.query):Post.find()
+    request.populate('tags').populate('user').then(
         success => res.send(new Success("响应成功！", success)),
         error => res.send(new Fail("响应失败！", error))
     )
