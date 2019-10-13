@@ -34,7 +34,6 @@ class BingWallpaper {
                 ...mergeOptions
             } = Object.assign({}, this.urlOptions);
             const url = 'https://' + baseUrl + wallPaperApi + '?' + queryString.stringify(mergeOptions)
-            console.log(url)
             const request = https.get(url, (res) => {
                 const {
                     statusCode
@@ -45,11 +44,18 @@ class BingWallpaper {
                     res.resume();
                     reject(error.message)
                 }
-                res.setEncoding('utf8');
-                res.on('data', (data) => {
-                    data = JSON.parse(data);
-                    resolve((data.images || data));
-                });
+                // res.setEncoding('utf8');
+                let body = []
+                res.on('data', data => {
+                    body.push(data)
+                })
+                res.on('end', () => {
+                    body = Buffer.concat(body).toString()
+                    if (this.urlOptions.format === 'js') {
+                        body = JSON.parse(body)
+                    }
+                    resolve(body.images || body)
+                })
             }).on('error', (e) => {
                 console.error(`Got error: ${e.message}`);
                 reject(e);
@@ -60,11 +66,9 @@ class BingWallpaper {
      * handle bing wallpaper data, only json
      */
     handleBingWallPapers(bingWallpaperData, resolution) {
-        if (!resolution) {
-            resolution = BingWallpaper.wallpaperResolutions[2]
-        }
-        if(this.urlOptions.format !== 'js'){
-          return new Error('handle json data only!')
+        resolution = resolution|| BingWallpaper.wallpaperResolutions[2]
+        if (this.urlOptions.format !== 'js') {
+            return new Error('handle json data only!')
         }
         const handleData = image => {
             const host = 'https://' + this.urlOptions.baseUrl
@@ -113,7 +117,7 @@ class BingWallpaper {
         idx: '0',
         n: 1,
         mkt: 'en-US',
-        ensearch: 0,
+        ensearch: 1,
         pid: 'hp',
     }
     static wallpaperResolutions = [

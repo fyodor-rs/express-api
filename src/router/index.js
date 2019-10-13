@@ -2,6 +2,10 @@ const express = require('express');
 const indexRouter = express.Router();
 const BingWallpaper = require('./bingWallpaper');
 const jwtAuth = require('../untils/jwtAuth');
+const {
+    Success,
+    Fail
+} = require('../untils/ApiResult');
 //允许跨域
 indexRouter.all('*', function (req, res, next) {
     res.header('Access-Control-Allow-Origin', '*');
@@ -22,9 +26,10 @@ indexRouter.use(function (err, req, res, next) {
 //获取壁纸
 indexRouter.get('/wallpapper', (req, res, next) => {
     const bw = new BingWallpaper();
-    bw.getWallpapersData().then((res) => {
-        console.log(bw.handleBingWallPapers(res));
-    });
+    bw.getWallpapersData().then(
+        success => res.send(new Success("响应成功！", bw.handleBingWallPapers(success))),
+        error => res.send(new Fail("响应失败！", error))
+    )
 });
 //导出路由
 const userRouter = require('./user');
