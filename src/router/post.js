@@ -50,7 +50,7 @@ postRouter.get('/list/:text', (req, res) => {
             ]
         }
     }
-    Post.find(search).populate('user').then(
+    Post.find(search).populate('user').populate('tags').then(
         success => res.send(new Success("响应成功！", success)),
         error => res.send(new Fail("响应失败！", error))
     )
