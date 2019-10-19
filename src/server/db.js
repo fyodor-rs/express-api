@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 
 //连接MongoDB数据库
-mongoose.connect('mongodb://localhost/blogserver',{useNewUrlParser:true});
+mongoose.connect('mongodb://localhost/blogserver',{useNewUrlParser:true, useUnifiedTopology: true});
 
 const db = mongoose.connection;
 

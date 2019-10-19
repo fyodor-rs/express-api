@@ -26,7 +26,7 @@ postRouter.post('/file', upload.array('file', 1), (req, res) => {
 })
 
 postRouter.get('/list', (req, res) => {
-    const request=Object.keys(req.query)!=0?Post.find(req.query):Post.find()
+    const request = Object.keys(req.query) != 0 ? Post.find(req.query) : Post.find()
     request.populate('tags').populate('user').then(
         success => res.send(new Success("响应成功！", success)),
         error => res.send(new Fail("响应失败！", error))
@@ -56,33 +56,76 @@ postRouter.get('/list/:text', (req, res) => {
     )
 });
 postRouter.get('/:id', (req, res) => {
-    Post.findById(req.params.id).then(
+    Post.findById(req.params.id).populate({
+        path: 'tags',
+        select: 'name',
+        select: 'name -_id'
+    }).select('img title rawContent htmlContent describe likes views tags category ').then(
         success => res.send(new Success("响应成功！", success)),
         error => res.send(new Fail("响应失败！", error))
     )
 });
 postRouter.post('/add', (req, res) => {
-     (async (tags)=> {
-         var tagList =[];
-        for (let i=0;i<tags.length;i++) {
-             const findItem= await Tag.findOne({'name':tags[i]})
-             if(!findItem){
-              const saveItem=  await new Tag({'name':tags[i]}).save()
-              tagList.push(saveItem);
-             }else{
-              tagList.push(findItem);
-             }
-             if(i==tags.length-1){
-                req.body.tags=tagList
-                const saveItem= await new Post(req.body).save()
-                return  res.send(new Success("发布成功！", saveItem))
-             }
+    const handleData=async (tags) => {
+        var tagList = [];
+        for (let i = 0; i < tags.length; i++) {
+            const findItem = await Tag.findOne({
+                name: tags[i]
+            })
+            if (!findItem) {
+                const saveItem = await new Tag({
+                    name: tags[i]
+                }).save()
+                tagList.push(saveItem);
+            } else {
+                tagList.push(findItem);
+            }
+            if (i == tags.length - 1) {
+                req.body.tags = tagList
+                return await new Post(req.body).save()
+            }
         }
-
-    })(req.body.tags)
+    }
+    handleData(req.body.tags).then(
+        success => res.send(new Success("发布成功！", success)),
+        error => res.send(new Fail("发布失败！", error))
+    )
 });
 postRouter.post('/edit', (req, res) => {
-
+    const {
+        _id,
+        tags,
+        ...body
+    } = req.body
+    const handleData = async (tags) => {
+        var tagList = [];
+        for (let i = 0; i < tags.length; i++) {
+            const findItem = await Tag.findOne({
+                name: tags[i]
+            })
+            if (!findItem) {
+                const saveItem = await new Tag({
+                    name: tags[i]
+                }).save()
+                tagList.push(saveItem);
+            } else {
+                tagList.push(findItem);
+            }
+            if (i == tags.length - 1) {
+                body.tags = tagList
+                return await Post.findByIdAndUpdate(_id,
+                    body, {
+                        "new": true,
+                        'fields': 'img title rawContent htmlContent describe likes views tags category '
+                    }
+                ).populate('tags')
+            }
+        }
+    }
+    handleData(tags).then(
+        success => res.send(new Success("更新成功！", success)),
+        error => res.send(new Fail("更新失败！", error))
+    )
 });
 postRouter.post('/delete', (req, res) => {
     Post.remove(req.body).then(
