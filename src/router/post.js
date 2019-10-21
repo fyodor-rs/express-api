@@ -30,7 +30,7 @@ postRouter.get('/list', (req, res) => {
     const request = Object.keys(req.query) != 0 ? Post.find(req.query) : Post.find()
     request.populate('tags').populate('user').then(
         success => {
-            return res.send(new Success("响应成功！", success.length?success:posts))
+            return res.send(new Success("响应成功！", success))
         },
         error => res.send(new Fail("响应失败！", error))
     )
@@ -55,7 +55,7 @@ postRouter.get('/list/:text', (req, res) => {
     }
     Post.find(search).populate('user').populate('tags').then(
         success => {
-            return res.send(new Success("响应成功！", success.length?success:posts))
+            return res.send(new Success("响应成功！", success))
         },
         error => res.send(new Fail("响应失败！", error))
     )
