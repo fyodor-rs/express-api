@@ -12,6 +12,7 @@ const {
     Success,
     Fail
 } = require('../untils/ApiResult');
+const posts = require('../untils/defaultPosts');
 
 postRouter.post('/file', upload.array('file', 1), (req, res) => {
     var files = req.files;
@@ -28,7 +29,9 @@ postRouter.post('/file', upload.array('file', 1), (req, res) => {
 postRouter.get('/list', (req, res) => {
     const request = Object.keys(req.query) != 0 ? Post.find(req.query) : Post.find()
     request.populate('tags').populate('user').then(
-        success => res.send(new Success("响应成功！", success)),
+        success => {
+            return res.send(new Success("响应成功！", success.length?success:posts))
+        },
         error => res.send(new Fail("响应失败！", error))
     )
 });
@@ -51,7 +54,9 @@ postRouter.get('/list/:text', (req, res) => {
         }
     }
     Post.find(search).populate('user').populate('tags').then(
-        success => res.send(new Success("响应成功！", success)),
+        success => {
+            return res.send(new Success("响应成功！", success.length?success:posts))
+        },
         error => res.send(new Fail("响应失败！", error))
     )
 });
@@ -66,7 +71,7 @@ postRouter.get('/:id', (req, res) => {
     )
 });
 postRouter.post('/add', (req, res) => {
-    const handleData=async (tags) => {
+    const handleData = async (tags) => {
         var tagList = [];
         for (let i = 0; i < tags.length; i++) {
             const findItem = await Tag.findOne({
