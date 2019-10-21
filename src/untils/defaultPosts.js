@@ -9,8 +9,8 @@ const posts = [{
         views: '',
         tags: '',
         category: 'learn',
-        createTime: Date.now,
-        updateTime: Date.now,
+        createTime: new Date(),
+        updateTime: new Date(),
     },
     {
         _id:'2',
@@ -23,8 +23,8 @@ const posts = [{
         views: '',
         tags: '',
         category: 'learn',
-        createTime: Date.now,
-        updateTime: Date.now,
+        createTime: new Date(),
+        updateTime: new Date(),
     },
     {
         _id:'3',
@@ -37,8 +37,8 @@ const posts = [{
         views: '',
         tags: '',
         category: 'learn',
-        createTime: Date.now,
-        updateTime: Date.now,
+        createTime: new Date(),
+        updateTime: new Date(),
     },
     {
         _id:'4',
@@ -51,8 +51,8 @@ const posts = [{
         views: '',
         tags: '',
         category: 'learn',
-        createTime: Date.now,
-        updateTime: Date.now,
+        createTime: new Date(),
+        updateTime: new Date(),
     },
     {
         _id:'5',
@@ -65,8 +65,8 @@ const posts = [{
         views: '',
         tags: '',
         category: 'learn',
-        createTime: Date.now,
-        updateTime: Date.now,
+        createTime: new Date(),
+        updateTime: new Date(),
     },
 ]
 
