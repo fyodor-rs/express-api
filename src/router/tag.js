@@ -6,7 +6,7 @@ const {
 const {
     Success,
     Fail
-} = require('../untils/ApiResult');
+} = require('../utils/ApiResult');
 
 tagRouter.get('/list', (req, res) => {
     Tag.find().then(

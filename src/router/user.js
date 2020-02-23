@@ -5,12 +5,12 @@ const {
     Post
 } = require('../model/schema');
 const utility = require('utility');
-const constant = require('../untils/constant');
+const constant = require('../utils/constant');
 const jwt = require('jsonwebtoken');
 const {
     Success,
     Fail
-} = require('../untils/ApiResult');
+} = require('../utils/ApiResult');
 
 
 userRouter.get('/currentUser', (req, res) => {

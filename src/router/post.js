@@ -3,7 +3,7 @@ const postRouter = express.Router();
 const {
     upload,
     myHost
-} = require('../untils/fileUtils');
+} = require('../utils/fileUtils');
 const {
     Post,
     Tag
@@ -11,7 +11,7 @@ const {
 const {
     Success,
     Fail
-} = require('../untils/ApiResult');
+} = require('../utils/ApiResult');
 
 postRouter.post('/file', upload.array('file', 1), (req, res) => {
     var files = req.files;

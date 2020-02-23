@@ -1,11 +1,11 @@
 const express = require('express');
 const indexRouter = express.Router();
 const BingWallpaper = require('./bingWallpaper');
-const jwtAuth = require('../untils/jwtAuth');
+const jwtAuth = require('../utils/jwtAuth');
 const {
     Success,
     Fail
-} = require('../untils/ApiResult');
+} = require('../utils/ApiResult');
 //允许跨域
 indexRouter.all('*', function (req, res, next) {
     res.header('Access-Control-Allow-Origin', '*');
